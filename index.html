@@ -1,61 +1,522 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Quant Trading</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>QuantPro - Professional Trading Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(59,130,246,0.3);
+        }
+        
+        .signal-buy {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+        }
+        
+        .signal-sell {
+            animation: pulseRed 2s infinite;
+        }
+        
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+            100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
+<body class="bg-gray-900">
+    <!-- Navigation -->
+    <nav class="bg-gray-900/95 backdrop-blur-md fixed w-full z-50 border-b border-gray-800">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-chart-line text-blue-500 text-2xl"></i>
+                    <span class="text-white text-xl font-bold">Quant<span class="text-blue-500">Pro</span></span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" onclick="showPage('home')" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="#" onclick="showPage('trading')" class="text-gray-300 hover:text-white transition">Trading</a>
+                    <a href="#" onclick="showPage('dashboard')" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="#" onclick="showPage('academy')" class="text-gray-300 hover:text-white transition">Academy</a>
+                    <a href="#" onclick="showPage('promo')" class="text-gray-300 hover:text-white transition">Promo</a>
+                </div>
+                
+                <div class="flex space-x-3">
+                    <button onclick="showLogin()" class="text-gray-300 hover:text-white px-4 py-2 transition">Login</button>
+                    <button onclick="showSignup()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<body style="margin:0; font-family:Arial; background:#0f172a; color:white; text-align:center;">
+    <!-- Main Content -->
+    <div class="pt-20">
+        <!-- Home Page -->
+        <div id="homePage" class="container mx-auto px-4 py-12">
+            <!-- Hero Section -->
+            <div class="text-center mb-16">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                    Trade <span class="text-blue-500">1000+</span> Products
+                </h1>
+                <p class="text-gray-400 text-xl mb-8">One of the world's leading CFD brokers with advanced trading tools</p>
+                <button onclick="showSignup()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition transform hover:scale-105">
+                    SIGN UP NOW
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
+                <div class="bg-gray-800/50 backdrop-blur rounded-2xl p-6 text-center card-hover">
+                    <i class="fas fa-users text-blue-500 text-3xl mb-3"></i>
+                    <h3 class="text-2xl font-bold text-white">5M+</h3>
+                    <p class="text-gray-400">Registered Users</p>
+                </div>
+                <div class="bg-gray-800/50 backdrop-blur rounded-2xl p-6 text-center card-hover">
+                    <i class="fas fa-chart-line text-blue-500 text-3xl mb-3"></i>
+                    <h3 class="text-2xl font-bold text-white">1000+</h3>
+                    <p class="text-gray-400">Products</p>
+                </div>
+                <div class="bg-gray-800/50 backdrop-blur rounded-2xl p-6 text-center card-hover">
+                    <i class="fas fa-charging-station text-blue-500 text-3xl mb-3"></i>
+                    <h3 class="text-2xl font-bold text-white">0.0 pips</h3>
+                    <p class="text-gray-400">Spreads From</p>
+                </div>
+                <div class="bg-gray-800/50 backdrop-blur rounded-2xl p-6 text-center card-hover">
+                    <i class="fas fa-wallet text-blue-500 text-3xl mb-3"></i>
+                    <h3 class="text-2xl font-bold text-white">$0</h3>
+                    <p class="text-gray-400">Deposit Fees*</p>
+                </div>
+            </div>
+            
+            <!-- Trust Badges -->
+            <div class="mb-16">
+                <h2 class="text-center text-white text-2xl mb-8">Trust We Have Earned</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-gray-800 rounded-xl p-4 text-center">
+                        <i class="fab fa-google text-4xl text-gray-400"></i>
+                        <div class="text-yellow-500 mt-2">★★★★☆</div>
+                        <p class="text-gray-400 text-sm">Google Play</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4 text-center">
+                        <i class="fab fa-trustpilot text-4xl text-gray-400"></i>
+                        <div class="text-yellow-500 mt-2">★★★★★</div>
+                        <p class="text-gray-400 text-sm">Trustpilot</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4 text-center">
+                        <i class="fas fa-chart-line text-4xl text-gray-400"></i>
+                        <div class="text-yellow-500 mt-2">★★★★☆</div>
+                        <p class="text-gray-400 text-sm">ForexBrokers.com</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4 text-center">
+                        <i class="fas fa-newspaper text-4xl text-gray-400"></i>
+                        <div class="text-yellow-500 mt-2">★★★★★</div>
+                        <p class="text-gray-400 text-sm">WikiFX</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Section -->
+            <div>
+                <h2 class="text-white text-2xl mb-6 text-center">Trade 1000+ CFD Products</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-gray-800 rounded-xl p-4 text-center card-hover">
+                        <i class="fas fa-dollar-sign text-blue-500 text-2xl mb-2"></i>
+                        <p class="text-white">Forex</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4 text-center card-hover">
+                        <i class="fas fa-chart-line text-blue-500 text-2xl mb-2"></i>
+                        <p class="text-white">Indices</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4 text-center card-hover">
+                        <i class="fas fa-oil-can text-blue-500 text-2xl mb-2"></i>
+                        <p class="text-white">Commodities</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-4 text-center card-hover">
+                        <i class="fas fa-building text-blue-500 text-2xl mb-2"></i>
+                        <p class="text-white">Shares</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Trading Page -->
+        <div id="tradingPage" class="hidden container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Live Signal -->
+                <div class="lg:col-span-1">
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6">
+                        <h2 class="text-white text-xl mb-4">🔥 Live Signal</h2>
+                        <div id="liveSignal" class="bg-gray-700/50 rounded-xl p-6 text-center signal-buy">
+                            <div class="text-4xl font-bold text-green-500 mb-3">BUY</div>
+                            <div class="grid grid-cols-3 gap-4 mt-4">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Entry</p>
+                                    <p class="text-white text-xl font-bold" id="signalEntry">2350</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 text-sm">SL</p>
+                                    <p class="text-red-500 text-xl font-bold" id="signalSL">2345</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 text-sm">TP</p>
+                                    <p class="text-green-500 text-xl font-bold" id="signalTP">2360</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Place Order -->
+                    <div class="bg-gray-800 rounded-2xl p-6 mt-6">
+                        <h2 class="text-white text-xl mb-4">Place Order</h2>
+                        <form id="orderForm">
+                            <select id="orderType" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                                <option value="BUY">BUY</option>
+                                <option value="SELL">SELL</option>
+                            </select>
+                            <input type="number" id="entryPrice" placeholder="Entry Price" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                            <input type="number" id="stopLoss" placeholder="Stop Loss" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                            <input type="number" id="takeProfit" placeholder="Take Profit" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                            <input type="number" id="quantity" placeholder="Quantity" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold">Place Order</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Chart -->
+                <div class="lg:col-span-2">
+                    <div class="bg-gray-800 rounded-2xl p-6">
+                        <h2 class="text-white text-xl mb-4">Market Chart</h2>
+                        <canvas id="tradingChart" height="300"></canvas>
+                    </div>
+                    
+                    <!-- Active Positions -->
+                    <div class="bg-gray-800 rounded-2xl p-6 mt-6">
+                        <h2 class="text-white text-xl mb-4">Active Positions</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-white">
+                                <thead>
+                                    <tr class="border-b border-gray-700">
+                                        <th class="text-left py-3">Type</th>
+                                        <th class="text-left py-3">Entry</th>
+                                        <th class="text-left py-3">SL</th>
+                                        <th class="text-left py-3">TP</th>
+                                        <th class="text-left py-3">P&L</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="positionsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="hidden container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gray-800 rounded-2xl p-6">
+                    <p class="text-gray-400">Total P&L</p>
+                    <p class="text-white text-3xl font-bold" id="totalPnL">$0.00</p>
+                </div>
+                <div class="bg-gray-800 rounded-2xl p-6">
+                    <p class="text-gray-400">Win Rate</p>
+                    <p class="text-white text-3xl font-bold" id="winRate">0%</p>
+                </div>
+                <div class="bg-gray-800 rounded-2xl p-6">
+                    <p class="text-gray-400">Total Trades</p>
+                    <p class="text-white text-3xl font-bold" id="totalTrades">0</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-2xl p-6">
+                <canvas id="pnlChart" height="300"></canvas>
+            </div>
+        </div>
+        
+        <!-- Academy Page -->
+        <div id="academyPage" class="hidden container mx-auto px-4 py-12">
+            <h1 class="text-4xl font-bold text-white text-center mb-12">Trading Academy</h1>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 rounded-2xl overflow-hidden card-hover">
+                    <img src="https://via.placeholder.com/400x200" alt="Course" class="w-full">
+                    <div class="p-6">
+                        <h3 class="text-white text-xl mb-2">Forex Trading Basics</h3>
+                        <p class="text-gray-400">Learn the fundamentals of forex trading</p>
+                        <button class="mt-4 text-blue-500">Start Learning →</button>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-2xl overflow-hidden card-hover">
+                    <div class="p-6">
+                        <h3 class="text-white text-xl mb-2">Technical Analysis</h3>
+                        <p class="text-gray-400">Master chart patterns and indicators</p>
+                        <button class="mt-4 text-blue-500">Start Learning →</button>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-2xl overflow-hidden card-hover">
+                    <div class="p-6">
+                        <h3 class="text-white text-xl mb-2">Risk Management</h3>
+                        <p class="text-gray-400">Protect your capital with smart strategies</p>
+                        <button class="mt-4 text-blue-500">Start Learning →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Promo Page -->
+        <div id="promoPage" class="hidden container mx-auto px-4 py-12">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-center">
+                <h1 class="text-4xl font-bold text-white mb-4">Download the App</h1>
+                <p class="text-white text-xl mb-8">Get exclusive deals and trade on the go!</p>
+                <div class="flex justify-center space-x-4">
+                    <button class="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2">
+                        <i class="fab fa-google-play text-2xl"></i>
+                        <span>Google Play</span>
+                    </button>
+                    <button class="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2">
+                        <i class="fab fa-apple text-2xl"></i>
+                        <span>App Store</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Login Modal -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="bg-gray-800 rounded-2xl p-8 max-w-md w-full mx-4">
+            <h2 class="text-white text-2xl mb-6">Login to QuantPro</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email Address" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                <input type="password" id="loginPassword" placeholder="Password" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-4">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold">Login</button>
+            </form>
+            <p class="text-gray-400 text-center mt-4">Don't have an account? <button onclick="showSignup(); hideLogin()" class="text-blue-500">Sign Up</button></p>
+        </div>
+    </div>
+    
+    <!-- Signup Modal -->
+    <div id="signupModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="bg-gray-800 rounded-2xl p-8 max-w-md w-full mx-4">
+            <h2 class="text-white text-2xl mb-6">Create Account</h2>
+            <form id="signupForm">
+                <input type="text" id="signupName" placeholder="Full Name" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                <input type="email" id="signupEmail" placeholder="Email Address" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-3">
+                <input type="password" id="signupPassword" placeholder="Password" class="w-full bg-gray-700 text-white rounded-lg px-4 py-3 mb-4">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold">CREATE ACCOUNT</button>
+            </form>
+            <p class="text-gray-400 text-center mt-4">Already have an account? <button onclick="showLogin(); hideSignup()" class="text-blue-500">Login</button></p>
+        </div>
+    </div>
 
-<!-- Navbar -->
-<div style="background:#020617; padding:15px;">
-  <a href="login.html" style="color:#38bdf8; margin-right:20px; text-decoration:none;">🔐 Login</a>
-  <a href="signup.html" style="color:#38bdf8; text-decoration:none;">📝 Signup</a>
-</div>
-
-<!-- Main -->
-<h1 style="margin-top:30px;">🔥 Quant Trading Dashboard</h1>
-
-<!-- Signal Box -->
-<div style="margin:40px auto; padding:30px; width:260px; background:#1e293b; border-radius:12px;">
-  
-  <h3>Live Signal</h3>
-  
-  <h2 id="signal" style="color:#22c55e;">Loading...</h2>
-
-  <p id="entry">Entry: --</p>
-  <p id="sl">SL: --</p>
-  <p id="tp">TP: --</p>
-
-</div>
-
-<script>
-async function getSignal() {
-  try {
-    let res = await fetch("https://quant-backend-jhum.onrender.com/signals");
-    let data = await res.json();
-
-    let signalText = data.action;
-
-    let color = signalText === "BUY" ? "#22c55e" : "#ef4444";
-
-    document.getElementById("signal").innerText = signalText;
-    document.getElementById("signal").style.color = color;
-
-    document.getElementById("entry").innerText = "Entry: " + data.entry;
-    document.getElementById("sl").innerText = "SL: " + data.sl;
-    document.getElementById("tp").innerText = "TP: " + data.tp;
-
-  } catch (error) {
-    document.getElementById("signal").innerText = "Error";
-  }
-}
-
-// Run first time
-getSignal();
-
-// Refresh every 3 sec
-setInterval(getSignal, 3000);
-</script>
-
+    <script>
+        let currentUser = null;
+        let chart;
+        
+        // Page Navigation
+        function showPage(page) {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('tradingPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.add('hidden');
+            document.getElementById('academyPage').classList.add('hidden');
+            document.getElementById('promoPage').classList.add('hidden');
+            
+            document.getElementById(page + 'Page').classList.remove('hidden');
+        }
+        
+        function showLogin() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+        
+        function hideLogin() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+        
+        function showSignup() {
+            document.getElementById('signupModal').classList.remove('hidden');
+        }
+        
+        function hideSignup() {
+            document.getElementById('signupModal').classList.add('hidden');
+        }
+        
+        // Trading Chart
+        function initChart() {
+            const ctx = document.getElementById('tradingChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'candlestick',
+                data: {
+                    datasets: [{
+                        label: 'Price',
+                        data: generateMockData(),
+                        borderColor: 'rgb(59, 130, 246)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+        }
+        
+        function generateMockData() {
+            const data = [];
+            let price = 2350;
+            for (let i = 0; i < 50; i++) {
+                price += (Math.random() - 0.5) * 10;
+                data.push({
+                    x: i,
+                    o: price - 2,
+                    h: price + 3,
+                    l: price - 3,
+                    c: price
+                });
+            }
+            return data;
+        }
+        
+        // Simulate live signal updates
+        function startLiveSignals() {
+            setInterval(() => {
+                const signals = ['BUY', 'SELL'];
+                const randomSignal = signals[Math.floor(Math.random() * signals.length)];
+                const signalDiv = document.getElementById('liveSignal');
+                
+                if (randomSignal === 'BUY') {
+                    signalDiv.className = 'bg-gray-700/50 rounded-xl p-6 text-center signal-buy';
+                    document.querySelector('#liveSignal div:first-child').className = 'text-4xl font-bold text-green-500 mb-3';
+                } else {
+                    signalDiv.className = 'bg-gray-700/50 rounded-xl p-6 text-center signal-sell';
+                    document.querySelector('#liveSignal div:first-child').className = 'text-4xl font-bold text-red-500 mb-3';
+                }
+                
+                document.querySelector('#liveSignal div:first-child').textContent = randomSignal;
+                
+                const basePrice = randomSignal === 'BUY' ? 2350 : 2400;
+                document.getElementById('signalEntry').textContent = basePrice;
+                document.getElementById('signalSL').textContent = basePrice - 5;
+                document.getElementById('signalTP').textContent = basePrice + 10;
+            }, 30000);
+        }
+        
+        // Order Form Handler
+        document.getElementById('orderForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                alert('Please login first');
+                showLogin();
+                return;
+            }
+            
+            const order = {
+                type: document.getElementById('orderType').value,
+                entry: document.getElementById('entryPrice').value,
+                sl: document.getElementById('stopLoss').value,
+                tp: document.getElementById('takeProfit').value,
+                quantity: document.getElementById('quantity').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            updatePositionsTable();
+            alert('Order placed successfully!');
+            e.target.reset();
+        });
+        
+        function updatePositionsTable() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const tableBody = document.getElementById('positionsTable');
+            tableBody.innerHTML = '';
+            
+            orders.slice(-5).forEach(order => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td class="py-2 ${order.type === 'BUY' ? 'text-green-500' : 'text-red-500'}">${order.type}</td>
+                    <td class="py-2">$${order.entry}</td>
+                    <td class="py-2">$${order.sl}</td>
+                    <td class="py-2">$${order.tp}</td>
+                    <td class="py-2">$0.00</td>
+                `;
+            });
+        }
+        
+        // Login Handler
+        document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Mock login - In production, connect to backend
+            if (email && password) {
+                currentUser = { email };
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                hideLogin();
+                showPage('trading');
+                alert('Login successful!');
+            }
+        });
+        
+        // Signup Handler
+        document.getElementById('signupForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (name && email && password) {
+                currentUser = { name, email };
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                hideSignup();
+                showPage('trading');
+                alert('Account created successfully!');
+            }
+        });
+        
+        // Check saved user
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+        }
+        
+        // Initialize
+        initChart();
+        startLiveSignals();
+        updatePositionsTable();
+    </script>
 </body>
-</html>
+                                                                                   </html>
