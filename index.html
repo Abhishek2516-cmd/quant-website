@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quant Trading</title>
+</head>
+<body style="text-align:center; font-family:Arial;">
+
+<h1>🔥 Quant Trading Dashboard</h1>
+<h2 id="signal">Loading...</h2>
+
+<script>
+async function getSignal() {
+  let res = await fetch("https://your-backend.onrender.com/signals");
+  let data = await res.json();
+
+  document.getElementById("signal").innerText = data.action;
+}
+
+setInterval(getSignal, 3000);
+</script>
+
+</body>
+</html>
