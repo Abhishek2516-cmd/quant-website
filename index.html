@@ -3,23 +3,46 @@
 <head>
   <title>Quant Trading</title>
 </head>
-<body style="text-align:center; font-family:Arial;">
 
-<h1>🔥 Quant Trading Dashboard</h1>
-<h2 id="signal">Loading...</h2>
+<body style="margin:0; font-family:Arial; background:#0f172a; color:white; text-align:center;">
+
+<!-- Navbar -->
+<div style="background:#020617; padding:15px;">
+  <a href="login.html" style="color:#38bdf8; margin-right:20px; text-decoration:none;">🔐 Login</a>
+  <a href="signup.html" style="color:#38bdf8; text-decoration:none;">📝 Signup</a>
+</div>
+
+<!-- Main -->
+<h1 style="margin-top:30px;">🔥 Quant Trading Dashboard</h1>
+
+<!-- Signal Box -->
+<div style="margin:40px auto; padding:30px; width:250px; background:#1e293b; border-radius:10px;">
+  <h3>Live Signal</h3>
+  <h2 id="signal" style="color:#22c55e;">Loading...</h2>
+</div>
 
 <script>
 async function getSignal() {
-  let res = await fetch("https://quant-backend-jhum.onrender.com/signals");
-  let data = await res.json();
+  try {
+    let res = await fetch("https://quant-backend-jhum.onrender.com/signals");
+    let data = await res.json();
 
-  document.getElementById("signal").innerText = data.action;
+    let signalText = data.action;
+
+    let color = signalText === "BUY" ? "#22c55e" : "#ef4444";
+
+    document.getElementById("signal").innerText = signalText;
+    document.getElementById("signal").style.color = color;
+
+  } catch (error) {
+    document.getElementById("signal").innerText = "Error";
+  }
 }
 
-// Run immediately first time
+// Run first time
 getSignal();
 
-// Then repeat every 3 sec
+// Refresh every 3 sec
 setInterval(getSignal, 3000);
 </script>
 
