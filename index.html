@@ -16,9 +16,16 @@
 <h1 style="margin-top:30px;">🔥 Quant Trading Dashboard</h1>
 
 <!-- Signal Box -->
-<div style="margin:40px auto; padding:30px; width:250px; background:#1e293b; border-radius:10px;">
+<div style="margin:40px auto; padding:30px; width:260px; background:#1e293b; border-radius:12px;">
+  
   <h3>Live Signal</h3>
+  
   <h2 id="signal" style="color:#22c55e;">Loading...</h2>
+
+  <p id="entry">Entry: --</p>
+  <p id="sl">SL: --</p>
+  <p id="tp">TP: --</p>
+
 </div>
 
 <script>
@@ -33,6 +40,10 @@ async function getSignal() {
 
     document.getElementById("signal").innerText = signalText;
     document.getElementById("signal").style.color = color;
+
+    document.getElementById("entry").innerText = "Entry: " + data.entry;
+    document.getElementById("sl").innerText = "SL: " + data.sl;
+    document.getElementById("tp").innerText = "TP: " + data.tp;
 
   } catch (error) {
     document.getElementById("signal").innerText = "Error";
