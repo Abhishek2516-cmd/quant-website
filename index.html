@@ -10,12 +10,16 @@
 
 <script>
 async function getSignal() {
-  let res = await fetch("https://your-backend.onrender.com/signals");
+  let res = await fetch("https://quant-backend-jhum.onrender.com/signals");
   let data = await res.json();
 
   document.getElementById("signal").innerText = data.action;
 }
 
+// Run immediately first time
+getSignal();
+
+// Then repeat every 3 sec
 setInterval(getSignal, 3000);
 </script>
 
